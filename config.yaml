@@ -1,37 +1,13 @@
-# 追踪方向（每个关键词在 ti/abs/co 中择一即命中；多关键词为 OR，再与 categories 按 logic 组合）:
-# 1) RL for LLM：用人类/AI 反馈、偏好优化、策略梯度等对齐或训练大语言模型
-# 2) LLM 自动化算法设计：用 LLM 做程序/架构/算法发现、自动 ML、演搜索等
+# 追踪方向（多关键词为 OR，再与 categories 按 AND；已精简以缩短总查询长度、降低 arXiv 400 风险）:
+# 1) RL for LLM
+# 2) LLM 自动化算法设计
 categories: ["cs.LG", "cs.AI", "cs.CL", "cs.NE"]
 keywords:
-  # --- RL for LLM ---
   - "RLHF"
-  - "reinforcement learning from human feedback"
-  - "reinforcement learning for large language model"
-  - "reinforcement learning with large language model"
-  - "reinforcement learning from AI feedback"
-  - "RLAIF"
-  - "direct preference optimization"
-  - "group relative policy optimization"
-  - "GRPO"
-  - "proxy reward"
-  - "reward model"
-  - "DPO"
-  - "ORPO"
-  - "KTO"
-  - "PPO for language"
-  # --- LLM Automated Algorithm Design (AAD) ---
+  - "RL for LLM"
+  - "RL"
   - "automated algorithm design"
-  - "LLM for algorithm design"
-  - "large language model for program synthesis"
-  - "large language model for neural architecture"
-  - "neural program synthesis"
-  - "language model for neural architecture search"
-  - "LLM for AutoML"
-  - "LLM and AutoML"
-  - "neural program search"
-  - "LLM for algorithm discovery"
-  - "FunSearch"
-  - "AlphaCode"
+  - "LLM AAD"
 
 # exclude_keywords: []
 
@@ -61,13 +37,12 @@ email:
   attach_pdf: false
 
 llm:
-  provider: "openai-compatible"
-  base_url: "https://api.siliconflow.cn"
-  model: "Qwen/Qwen2.5-7B-Instruct"
+  base_url: "https://api.deepseek.com"
+  model: "deepseek-chat"
   api_key_env: "OPENAI_COMPAT_API_KEY"
-  # base_url: "https://api.deepseek.com"
-  # model: "deepseek-chat"
-  # api_key_env: "OPENAI_COMPAT_API_KEY"
+  #  SiliconFlow 示例：
+  #  base_url: "https://api.siliconflow.cn"
+  #  model: "Qwen/Qwen2.5-7B-Instruct"
 
   system_prompt_en: |
     You are a senior paper-reading assistant. Based on the given metadata and abstract,
