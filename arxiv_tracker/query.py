@@ -2,18 +2,20 @@
 import re
 from typing import List
 
-FIELDS = ("ti", "abs", "co")  # 标题/摘要/评论（会议常在 comments）
-
 def _quote(term: str) -> str:
     # 有空格或连字符时加引号，避免被拆词
     t = term.strip()
-    if re.search(r'[\s-]', t):
+    if re.search(r"[\s-]", t):
         return f'"{t}"'
     return t
 
-def _field_or(fields: List[str], term: str) -> str:
-    q = _quote(term)
-    return "(" + " OR ".join(f"{f}:{q}" for f in fields) + ")"
+
+def _all_field(term: str) -> str:
+    """
+    使用 arXiv 官方字段 all:（见 API manual：含 ti/abs/co/au 等）。
+    比 (ti:.. OR abs:.. OR co:..) 短约 2/3 长度，避免 search_query 超 URL/服务端上限返回 HTTP 400。
+    """
+    return f"all:{_quote(term)}"
 
 def _expand_variants(kw: str) -> List[str]:
     """为一个关键词生成若干变体：连字符/空格、大小写不敏感"""
@@ -34,17 +36,17 @@ def _kw_group(kw: str) -> str:
     variants = _expand_variants(kw)
     parts = []
 
-    # 1) 短语匹配（多个变体，ti/abs/co）
+    # 1) 短语匹配（多连字符/空格变体；all: 一次覆盖多字段）
     for v in variants:
-        parts.append(_field_or(FIELDS, v))
+        parts.append(_all_field(v))
 
     # 2) 针对 open-vocabulary segmentation 的拆词 AND（覆盖更多写法）
     low = kw.lower()
     if ("open vocabulary" in low or "open-vocabulary" in low) and "segmentation" in low:
         ov_terms = ["open vocabulary", "open-vocabulary", "open-vocabulary segmentation", "open vocabulary segmentation"]
         seg_terms = ["segmentation", "image segmentation"]
-        ov_or = "(" + " OR ".join(_field_or(FIELDS, t) for t in ov_terms) + ")"
-        seg_or = "(" + " OR ".join(_field_or(FIELDS, t) for t in seg_terms) + ")"
+        ov_or = "(" + " OR ".join(_all_field(t) for t in ov_terms) + ")"
+        seg_or = "(" + " OR ".join(_all_field(t) for t in seg_terms) + ")"
         parts.append(f"({ov_or} AND {seg_or})")
 
     return "(" + " OR ".join(parts) + ")"
