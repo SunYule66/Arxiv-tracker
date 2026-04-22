@@ -26,6 +26,8 @@ jobs:
       contents: write           # 允许提交 docs
     env:
       TZ: Asia/Shanghai         # 站点/邮件时间戳按北京时间显示
+      # 使用 Node 24 跑 JS Action（见官方弃用说明：2026-09 起将移除 Node 20）
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
     steps:
       - name: Checkout
