@@ -1,18 +1,18 @@
-# 追踪方向（多关键词为 OR，再与 categories 按 AND；已精简以缩短总查询长度、降低 arXiv 400 风险）:
+# 追踪方向:
 # 1) RL for LLM
 # 2) LLM 自动化算法设计
 categories: ["cs.LG", "cs.AI", "cs.CL", "cs.NE"]
 keywords:
   - "RLHF"
-  - "RL for LLM"
-  - "RL"
-  - "automated algorithm design"
-  - "LLM AAD"
+  - "RL+LLM"
+  - "LLM AutoML"
+  - "LLM for Automated Algorithm Design"
+  - "LLM for Automated Design"
 
 # exclude_keywords: []
 
 logic: "AND"
-max_results: 50
+max_results: 20
 sort_by: "lastUpdatedDate"
 sort_order: "descending"
 
@@ -32,7 +32,7 @@ email:
   tls: "ssl"
   debug: false
   detail: "full"
-  max_items: 30
+  max_items: 10
   attach_md: true
   attach_pdf: false
 

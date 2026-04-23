@@ -86,34 +86,246 @@ def _strip_redundant_links(md: str) -> str:
 def _css(accent: str = "#2563eb") -> str:
     return f"""
 :root {{
-  --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#667085; --border:#e5e7eb; --acc:{accent};
+  --bg0:#f1f4f9;
+  --bg1:#e4eaf3;
+  --card:#ffffff;
+  --text:#0b1220;
+  --text2:#334155;
+  --muted:#64748b;
+  --line:rgba(15,23,42,.08);
+  --acc:{accent};
+  --acc-faint: color-mix(in srgb, {accent} 14%, transparent);
+  --acc-ghost: color-mix(in srgb, {accent} 6%, #ffffff);
+  --shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 4px 20px rgba(15,23,42,.06);
+  --shadow-h: 0 12px 32px rgba(15,23,42,.1);
+  --r: 18px;
+  --r-sm: 10px;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-t: "Outfit", var(--font);
 }}
 :root[data-theme="dark"] {{
-  --bg:#0b0f17; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --acc:{accent};
+  --bg0: #0b0d12;
+  --bg1: #12151d;
+  --card: #161a24;
+  --text: #e8ecf4;
+  --text2: #a8b3c9;
+  --muted: #8892a4;
+  --line: rgba(232,236,244,.1);
+  --acc-faint: color-mix(in srgb, {accent} 22%, transparent);
+  --acc-ghost: color-mix(in srgb, {accent} 8%, #161a24);
+  --shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 4px 24px rgba(0,0,0,.35);
+  --shadow-h: 0 16px 40px rgba(0,0,0,.45);
 }}
-*{{box-sizing:border-box}} body{{margin:0;background:var(--bg);color:var(--text);
-  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.6;}}
-.container{{max-width:900px;margin:0 auto;padding:18px;}}
-.header{{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:8px 0 16px;flex-wrap:wrap}}
-h1{{font-size:22px;margin:0}}
-.badge{{font-size:12px;color:#111827;background:var(--acc);padding:2px 8px;border-radius:999px}}
-.card{{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}}
-.title{{font-weight:700;margin:0 0 6px 0;font-size:18px}}
-.meta-line{{color:var(--muted);font-size:13px;margin:2px 0}}
-.links a{{color:var(--acc);text-decoration:none;margin-right:12px}}
-.detail{{margin-top:10px;background:rgba(2,6,23,.03);border:1px solid var(--border);border-radius:10px;padding:8px 10px}}
-summary{{cursor:pointer;color:var(--acc)}}
-.mono{{white-space:pre-wrap;background:rgba(2,6,23,.03);border:1px solid var(--border);padding:10px;border-radius:10px}}
-.row{{display:grid;grid-template-columns:1fr;gap:12px}}
-@media (min-width: 860px) {{
-  .row-2{{grid-template-columns:1fr 1fr}}
+* {{ box-sizing: border-box; }}
+html {{ -webkit-font-smoothing: antialiased; }}
+body {{
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.65;
+  background: fixed linear-gradient(168deg, var(--bg0) 0%, var(--bg1) 48%, var(--bg0) 100%), var(--bg0);
+  letter-spacing: 0.01em;
 }}
-.footer{{color:var(--muted);font-size:13px;margin:20px 0 10px}}
-.hr{{height:1px;background:var(--border);margin:14px 0}}
-.history-list a{{display:block;color:var(--acc);text-decoration:none;margin:4px 0}}
-.controls{{display:flex;gap:8px;align-items:center}}
-.btn{{border:1px solid var(--border);background:var(--card);padding:6px 10px;border-radius:10px;cursor:pointer;color:var(--text)}}
-.btn:hover{{border-color:var(--acc)}}
+.container {{ max-width: 52rem; margin: 0 auto; padding: 28px 20px 40px; }}
+.app-header {{
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}}
+h1 {{
+  font-family: var(--font-t);
+  font-size: clamp(1.25rem, 1.1rem + 1vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin: 0;
+  max-width: 20ch;
+  color: var(--text);
+}}
+.badge-time {{
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text2);
+  background: var(--acc-ghost);
+  border: 1px solid var(--acc-faint);
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}}
+.lead-row {{
+  margin: 1.25rem 0 1.5rem;
+}}
+.page-sub {{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}}
+.page-sub::before {{
+  content: "";
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 2px;
+  background: var(--acc);
+  opacity: 0.9;
+}}
+.toolbar {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }}
+.btn {{
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text2);
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: color .15s, border-color .15s, background .15s, transform .12s;
+}}
+.btn:hover {{
+  color: var(--text);
+  border-color: var(--acc-faint);
+  background: var(--acc-ghost);
+}}
+.btn:active {{ transform: scale(0.98); }}
+#theme-label {{ font-size: 0.72rem; letter-spacing: 0.04em; opacity: 0.9; }}
+.row {{ display: flex; flex-direction: column; gap: 1.1rem; }}
+.paper {{
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 1.1rem 1.15rem 1.1rem 1.35rem;
+  box-shadow: var(--shadow);
+  transition: box-shadow .2s, transform .18s, border-color .2s;
+}}
+.paper::before {{
+  content: "";
+  position: absolute;
+  left: 0; top: 0.6rem; bottom: 0.6rem; width: 3px; border-radius: 3px;
+  background: var(--acc);
+  opacity: 0.9;
+}}
+.paper:hover {{
+  box-shadow: var(--shadow-h);
+  border-color: var(--acc-faint);
+  transform: translateY(-2px);
+}}
+.title {{
+  font-family: var(--font-t);
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  margin: 0 0 0.5rem 0;
+  color: var(--text);
+}}
+.meta-line {{
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin: 0.2rem 0 0.15rem;
+}}
+.meta-line b {{ color: var(--text2); font-weight: 600; }}
+.doc-links {{ margin-top: 0.65rem; line-height: 1.6; display: flex; flex-wrap: wrap; gap: 0.4rem 0.65rem; }}
+.doc-links a {{
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--acc);
+  text-decoration: none;
+  padding: 3px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s, color .15s;
+}}
+.doc-links a:hover {{ border-bottom-color: var(--acc); }}
+.prose-blk details.detail {{
+  margin-top: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--acc-ghost);
+  overflow: hidden;
+}}
+.prose-blk .detail summary {{
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text2);
+  padding: 0.55rem 0.7rem;
+  user-select: none;
+}}
+.prose-blk .detail summary::-webkit-details-marker {{ display: none; }}
+.prose-blk .detail summary::before {{
+  content: "▸";
+  font-size: 0.65rem;
+  color: var(--acc);
+  transition: transform .2s;
+}}
+.prose-blk .detail[open] summary::before {{ transform: rotate(90deg); }}
+.prose-blk .detail .mono, .prose-blk .detail > :not(summary) {{ margin: 0; border: 0; border-top: 1px solid var(--line); background: var(--card); border-radius: 0; padding: 0.75rem 0.8rem; }}
+.mono {{
+  white-space: pre-wrap;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--text2);
+  word-break: break-word;
+}}
+.history-block {{
+  margin-top: 1.75rem;
+  padding: 0.2rem 0 0.5rem;
+  border-top: 1px solid var(--line);
+}}
+.history-block details.detail {{
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--acc-ghost);
+  overflow: hidden;
+}}
+.history-block .detail summary {{ padding: 0.65rem 0.9rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text2); cursor: pointer; list-style: none; }}
+.history-block .history-list {{ padding: 0.4rem 0.55rem 0.55rem; background: var(--card); max-height: 12rem; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }}
+.history-list a {{
+  display: block;
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 6px;
+  transition: background .12s, color .12s;
+}}
+.history-list a:hover {{
+  color: var(--acc);
+  background: var(--acc-ghost);
+}}
+.footer {{
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin: 2rem 0 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  letter-spacing: 0.02em;
+}}
 """
 
 def _join_links(it: Dict[str, Any]) -> str:
@@ -145,19 +357,24 @@ def _card(it: Dict[str, Any],
     digest_en = (sum_en or {}).get("digest_en") or (sum_zh or {}).get("digest_en") or ""
     digest_zh = (sum_zh or {}).get("digest_zh") or (sum_en or {}).get("digest_zh") or ""
 
-    parts = [f'<div class="card">', f'<div class="title">{_esc(t)}</div>']
+    parts = [f'<article class="paper">', f'<h2 class="title">{_esc(t)}</h2>']
 
     # 元信息分行
-    parts.append(f'<div class="meta-line">Authors: {_esc(au)}</div>')
+    parts.append(f'<div class="meta-line"><b>Authors</b> · {_esc(au)}</div>')
     if venue:
-        parts.append(f'<div class="meta-line">Venue: {_esc(venue)}</div>')
-    parts.append(f'<div class="meta-line">First: {_esc(pub)} · Latest: {_esc(upd)}</div>')
+        parts.append(f'<div class="meta-line"><b>Venue</b> · {_esc(venue)}</div>')
+    parts.append(f'<div class="meta-line"><b>First</b> {_esc(pub)} · <b>Latest</b> {_esc(upd)}</div>')
     if comm:
-        parts.append(f'<div class="meta-line">Comments: {_esc(comm)}</div>')
+        parts.append(f'<div class="meta-line"><b>Comments</b> · {_esc(comm)}</div>')
 
     # 链接
     links = _join_links(it)
-    if links: parts.append(f'<div class="links" style="margin-top:8px">{links}</div>')
+    if links:
+        parts.append(f'<div class="doc-links">{links}</div>')
+
+    has_body = bool(absu or zh_abs or zh_title or digest_en or digest_zh)
+    if has_body:
+        parts.append('<div class="prose-blk">')
 
     # 摘要（英文原文，可折叠）
     if absu:
@@ -167,20 +384,25 @@ def _card(it: Dict[str, Any],
     # 中文标题/摘要（可选）
     if zh_abs or zh_title:
         parts.append('<details class="detail"><summary>中文标题/摘要</summary>')
-        if zh_title: parts.append(f'<div class="mono"><b>标题：</b>{_esc(zh_title)}</div>')
-        if zh_abs:   parts.append(f'<div class="mono" style="margin-top:8px">{_esc(zh_abs)}</div>')
+        if zh_title:
+            parts.append(f'<div class="mono"><b>标题</b> {_esc(zh_title)}</div>')
+        if zh_abs:
+            parts.append(f'<div class="mono" style="margin-top:6px">{_esc(zh_abs)}</div>')
         parts.append('</details>')
 
-    # ✅ 只渲染双语总结（英文→中文），去掉 TL;DR & 方法卡
+    # 双语总结
     if digest_en or digest_zh:
         parts.append('<details class="detail"><summary>Summary / 总结</summary>')
         if digest_en:
             parts.append(f'<div class="mono">{_esc(digest_en)}</div>')
         if digest_zh:
-            parts.append(f'<div class="mono" style="margin-top:8px">{_esc(digest_zh)}</div>')
+            parts.append(f'<div class="mono" style="margin-top:6px">{_esc(digest_zh)}</div>')
         parts.append('</details>')
 
-    parts.append('</div>')
+    if has_body:
+        parts.append('</div>')
+
+    parts.append('</article>')
     return "\n".join(parts)
 
 
@@ -223,31 +445,39 @@ def _build_page(title: str, sub: str, cards_html: str, history_html: str,
 }})();
 </script>
 """
+    font_links = """
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+"""
     controls = """
-<div class="controls">
-  <button class="btn" onclick="__toggleTheme()">Theme: <span id="theme-label" style="margin-left:6px">AUTO</span></button>
-  <button class="btn" onclick="__expandAll(true)">Expand All</button>
-  <button class="btn" onclick="__expandAll(false)">Collapse All</button>
+<div class="toolbar" role="toolbar" aria-label="View options">
+  <button type="button" class="btn" onclick="__toggleTheme()">Theme <span id="theme-label" style="margin-left:4px">AUTO</span></button>
+  <button type="button" class="btn" onclick="__expandAll(true)">Expand all</button>
+  <button type="button" class="btn" onclick="__expandAll(false)">Collapse all</button>
 </div>
 """
     return f"""<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{_esc(title)}</title><style>{_css(accent)}</style>{js}</head>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>{_esc(title)}</title>{font_links}<style>{_css(accent)}</style>{js}</head>
 <body>
   <div class="container">
-    <div class="header">
+    <header class="app-header">
       <h1>{_esc(title)}</h1>
-      <div style="display:flex;gap:10px;align-items:center">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-end">
         {controls}
-        <span class="badge">{_esc(now)}</span>
+        <time class="badge-time" datetime="{_esc(now)}">{_esc(now)}</time>
       </div>
+    </header>
+    <div class="lead-row">
+      <p class="page-sub">{_esc(sub)}</p>
     </div>
-    <div class="hr"></div>
-    <div>{_esc(sub)}</div>
-    <div class="row">{cards_html}</div>
-    <details style="margin-top:16px" class="detail"><summary>History</summary>
-      <div class="history-list">{history_html}</div>
+    <div class="row" role="feed" aria-label="Papers">{cards_html}</div>
+    <div class="history-block">
+    <details class="detail"><summary>Archive / history</summary>
+      <nav class="history-list" aria-label="Past digests">{history_html}</nav>
     </details>
+    </div>
     <div class="footer">Generated by arxiv-tracker</div>
   </div>
 </body></html>

@@ -154,7 +154,7 @@ jobs:
             --verbose
 
       - name: Commit changes to docs & state
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "chore: update digest, site & dedup state"
           file_pattern: |
